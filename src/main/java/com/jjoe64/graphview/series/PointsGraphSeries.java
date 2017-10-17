@@ -16,8 +16,8 @@
  */
 package com.jjoe64.graphview.series;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -111,7 +111,8 @@ public class PointsGraphSeries<E extends DataPointInterface> extends BaseSeries<
     /**
      * creates the series without data
      */
-    public PointsGraphSeries() {
+    public PointsGraphSeries(Context context) {
+        super(context);
         init();
     }
 
@@ -120,8 +121,8 @@ public class PointsGraphSeries<E extends DataPointInterface> extends BaseSeries<
      *
      * @param data datapoints
      */
-    public PointsGraphSeries(E[] data) {
-        super(data);
+    public PointsGraphSeries(Context context, E[] data) {
+        super(context, data);
         init();
     }
 

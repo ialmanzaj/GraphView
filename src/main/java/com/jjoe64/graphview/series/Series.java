@@ -81,6 +81,8 @@ public interface Series<E extends DataPointInterface> {
      */
     public void draw(GraphView graphView, Canvas canvas, boolean isSecondScale);
 
+
+
     /**
      * @return the title of the series. Used in the legend
      */

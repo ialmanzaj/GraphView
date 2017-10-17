@@ -16,11 +16,10 @@
  */
 package com.jjoe64.graphview.series;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
 
 import com.jjoe64.graphview.GraphView;
@@ -41,6 +40,10 @@ import java.util.TreeSet;
  */
 public class BarGraphSeries<E extends DataPointInterface> extends BaseSeries<E> {
     private static final long ANIMATION_DURATION = 333;
+
+
+    private float[] mBarsTopXValues;
+    private float[] mBarsTopYValues;
 
     /**
      * paint to do drawing on canvas
@@ -128,7 +131,8 @@ public class BarGraphSeries<E extends DataPointInterface> extends BaseSeries<E> 
     /**
      * creates bar series without any data
      */
-    public BarGraphSeries() {
+    public BarGraphSeries(Context context) {
+        super(context);
         mPaint = new Paint();
     }
 
@@ -138,11 +142,14 @@ public class BarGraphSeries<E extends DataPointInterface> extends BaseSeries<E> 
      * @param data  data points
      *              important: array has to be sorted from lowest x-value to the highest
      */
-    public BarGraphSeries(E[] data) {
-        super(data);
+    public BarGraphSeries(Context context, E[] data) {
+        super(context,data);
         mPaint = new Paint();
         mAnimationInterpolator = new AccelerateInterpolator(2f);
     }
+
+
+
 
     /**
      * draws the bars on the canvas
@@ -229,9 +236,16 @@ public class BarGraphSeries<E extends DataPointInterface> extends BaseSeries<E> 
             }
         }
 
+
         int numBarSlots = (minGap == 0) ? 1 : (int)Math.round((maxX - minX)/minGap) + 1;
 
         Iterator<E> values = getValues(minX, maxX);
+
+
+        //bars x and y positions
+        mBarsTopXValues = new float[numValues];
+        mBarsTopYValues = new float[numValues];
+
 
         // Calculate the overall bar slot width - this includes all bars across
         // all series, and any spacing between sets of bars
@@ -245,6 +259,7 @@ public class BarGraphSeries<E extends DataPointInterface> extends BaseSeries<E> 
         double barWidth = (barSlotWidth - spacing) / numBarSeries;
         // Offset from the center of a given bar to start drawing
         double offset = barSlotWidth/2;
+
 
         double diffY = maxY - minY;
         double diffX = maxX - minX;
@@ -350,11 +365,24 @@ public class BarGraphSeries<E extends DataPointInterface> extends BaseSeries<E> 
                 canvas.drawText(
                         graphView.getGridLabelRenderer().getLabelFormatter().formatLabel(value.getY(), false)
                         , (float) (left+right)/2, (float) top, mPaint);
-            }
 
+
+                mBarsTopXValues[i] = (float) (left+right)/2;
+                mBarsTopYValues[i] = (float) top;
+            }
             i++;
         }
     }
+
+
+    public float[] getBarTopXValues(){
+        return  mBarsTopXValues;
+    }
+
+    public float[] getBarTopYValues(){
+        return  mBarsTopYValues;
+    }
+
 
     /**
      * @return the hook to generate value-dependent color. default null
@@ -515,6 +543,7 @@ public class BarGraphSeries<E extends DataPointInterface> extends BaseSeries<E> 
     public boolean isAnimated() {
         return mAnimated;
     }
+
 
     @Override
     public void drawSelection(GraphView mGraphView, Canvas canvas, boolean b, DataPointInterface value) {

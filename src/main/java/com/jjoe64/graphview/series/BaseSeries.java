@@ -16,9 +16,10 @@
  */
 package com.jjoe64.graphview.series;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
-import android.util.Log;
+import android.view.View;
 
 import com.jjoe64.graphview.GraphView;
 
@@ -29,7 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 /**
  * Basis implementation for series.
@@ -45,7 +45,8 @@ import java.util.Set;
  *
  * @author jjoe64
  */
-public abstract class BaseSeries<E extends DataPointInterface> implements Series<E> {
+public abstract class BaseSeries<E extends DataPointInterface> extends View implements Series<E> {
+
     /**
      * holds the data
      */
@@ -99,7 +100,8 @@ public abstract class BaseSeries<E extends DataPointInterface> implements Series
     /**
      * creates series without data
      */
-    public BaseSeries() {
+    public BaseSeries(Context context) {
+        super(context);
         mGraphViews = new ArrayList<>();
     }
 
@@ -109,7 +111,8 @@ public abstract class BaseSeries<E extends DataPointInterface> implements Series
      * @param data  data points
      *              important: array has to be sorted from lowest x-value to the highest
      */
-    public BaseSeries(E[] data) {
+    public BaseSeries(Context context, E[] data) {
+        super(context);
         mGraphViews = new ArrayList<>();
         for (E d : data) {
             mData.add(d);

@@ -16,6 +16,7 @@
  */
 package com.jjoe64.graphview.series;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -149,7 +150,8 @@ public class LineGraphSeries<E extends DataPointInterface> extends BaseSeries<E>
     /**
      * creates a series without data
      */
-    public LineGraphSeries() {
+    public LineGraphSeries(Context context) {
+        super(context);
         init();
     }
 
@@ -159,8 +161,8 @@ public class LineGraphSeries<E extends DataPointInterface> extends BaseSeries<E>
      * @param data  data points
      *              important: array has to be sorted from lowest x-value to the highest
      */
-    public LineGraphSeries(E[] data) {
-        super(data);
+    public LineGraphSeries(Context context, E[] data) {
+        super(context, data);
         init();
     }
 

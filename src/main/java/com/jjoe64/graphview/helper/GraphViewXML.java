@@ -27,10 +27,8 @@ import com.jjoe64.graphview.R;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.BaseSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
-import com.jjoe64.graphview.series.Series;
 
 /**
  * helper class to use GraphView directly
@@ -108,14 +106,18 @@ public class GraphViewXML extends GraphView {
         if (type == null || type.isEmpty()) {
             type = "line";
         }
-        if (type.equals("line")) {
-            series = new LineGraphSeries<DataPoint>(data);
-        } else if (type.equals("bar")) {
-            series = new BarGraphSeries<DataPoint>(data);
-        } else if (type.equals("points")) {
-            series = new PointsGraphSeries<DataPoint>(data);
-        } else {
-            throw new IllegalArgumentException("unknown graph type: "+type+". Possible is line|bar|points");
+        switch (type) {
+            case "line":
+                series = new LineGraphSeries<>(context, data);
+                break;
+            case "bar":
+                series = new BarGraphSeries<>(context, data);
+                break;
+            case "points":
+                series = new PointsGraphSeries<>(context, data);
+                break;
+            default:
+                throw new IllegalArgumentException("unknown graph type: " + type + ". Possible is line|bar|points");
         }
         if (color != Color.TRANSPARENT) {
             series.setColor(color);
