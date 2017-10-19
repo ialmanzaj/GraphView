@@ -247,6 +247,11 @@ public class GraphView extends View {
         onDataChanged(false, false);
     }
 
+    public void clearSeries() {
+        mSeries.clear();
+        onDataChanged(false, false);
+    }
+
     /**
      * important: do not do modifications on the list
      * object that will be returned.
